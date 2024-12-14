@@ -45,7 +45,7 @@ const showingNavigationDropdown = ref(false);
                             <span class="-mr-1 font-medium">Dashboard</span>
                         </SidebarLink>
                     </li>
-                    <!-- <li>
+                    <li>
                         <SidebarLink
                             :href="route('users.index')"
                             :active="route().current('users.index')"
@@ -114,7 +114,7 @@ const showingNavigationDropdown = ref(false);
                             <span class="-mr-1 font-medium">Permissions</span>
                         </SidebarLink>
                     </li>
-                    <li>
+                    <!-- <li>
                         <SidebarLink
                             :href="route('posts.index')"
                             :active="route().current('posts.index')"
@@ -176,7 +176,6 @@ const showingNavigationDropdown = ref(false);
                         hidden
                         class="text-2xl font-medium text-gray-600 lg:block"
                     >
-                        Dashboard
                     </h5>
                     <button class="w-12 h-16 -mr-2 border-r lg:hidden">
                         <svg
