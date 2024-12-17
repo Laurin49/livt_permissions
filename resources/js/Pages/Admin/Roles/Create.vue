@@ -5,9 +5,14 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import VueMultiselect from "vue-multiselect";
 
+defineProps({
+  permissions: Array,
+});
 const form = useForm({
   name: "",
+  permissions: [],
 });
 </script>
 
@@ -32,14 +37,25 @@ const form = useForm({
             <TextInput
               id="name"
               type="text"
-              class="block w-1/2 mt-1"
+              class="block w-full mt-1"
               v-model="form.name"
               autofocus
               autocomplete="username"
             />
             <InputError class="mt-2" :message="form.errors.name" />
           </div>
-          
+          <div class="mt-4">
+            <InputLabel for="permissions" value="Permissions" />
+            <VueMultiselect
+              v-model="form.permissions"
+              :options="permissions"
+              :multiple="true"
+              :close-on-select="true"
+              placeholder="Pick some"
+              label="name"
+              track-by="id"
+            />
+          </div>
           <div class="flex items-center mt-4">
             <PrimaryButton
               :class="{ 'opacity-25': form.processing }"
@@ -53,3 +69,4 @@ const form = useForm({
     </div>
   </AdminLayout>
 </template>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
