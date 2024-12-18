@@ -13,17 +13,19 @@ import { ref } from "vue";
 defineProps(["users"]);
 const form = useForm({});
 const showConfirmDeleteUserModal = ref(false);
+const currentUserDeleteId = ref(0);
 
-const confirmDeleteUser = () => {
+const confirmDeleteUser = (id) => {
     showConfirmDeleteUserModal.value = true;
+    currentUserDeleteId.value = id;
 };
 
 const closeModal = () => {
     showConfirmDeleteUserModal.value = false;
 };
 
-const deleteUser = (id) => {
-    form.delete(route("users.destroy", id), {
+const deleteUser = () => {
+    form.delete(route("users.destroy", currentUserDeleteId.value), {
         onSuccess: () => closeModal(),
     });
 };
@@ -70,7 +72,7 @@ const deleteUser = (id) => {
                                     Edit
                                 </Link>
                                 <button
-                                    @click="confirmDeleteUser"
+                                    @click="confirmDeleteUser(user.id)"
                                     class="text-red-400 hover:text-red-600"
                                 >
                                     Delete
@@ -85,7 +87,7 @@ const deleteUser = (id) => {
                                         </h2>
                                         <div class="flex mt-6 space-x-4">
                                             <DangerButton
-                                                @click="deleteUser(user.id)">
+                                                @click="deleteUser(d)">
                                                 Delete
                                             </DangerButton>
                                             <SecondaryButton @click="closeModal">

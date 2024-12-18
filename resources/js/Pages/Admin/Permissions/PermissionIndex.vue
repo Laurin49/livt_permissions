@@ -15,17 +15,19 @@ defineProps(["permissions"]);
 const form = useForm({});
 
 const showConfirmDeletePermissionModal = ref(false);
+const currentDeletePermissionId = ref(0);
 
-const confirmDeletePermission = () => {
+const confirmDeletePermission = (id) => {
     showConfirmDeletePermissionModal.value = true;
+    currentDeletePermissionId.value = id;
 };
 
 const closeModal = () => {
     showConfirmDeletePermissionModal.value = false;
 };
 
-const deletePermission = (id) => {
-    form.delete(route("permissions.destroy", id), {
+const deletePermission = () => {
+    form.delete(route("permissions.destroy", currentDeletePermissionId.value), {
         onSuccess: () => closeModal(),
     });
 };
@@ -71,7 +73,7 @@ const deletePermission = (id) => {
                                     Edit
                                 </Link>
                                 <button
-                                    @click="confirmDeletePermission"
+                                    @click="confirmDeletePermission(permission.id)"
                                     class="text-red-400 hover:text-red-600"
                                 >
                                     Delete
@@ -89,12 +91,9 @@ const deletePermission = (id) => {
                                         </h2>
                                         <div class="flex mt-6 space-x-4">
                                             <DangerButton
-                                                @click="
-                                                    deletePermission(
-                                                        permission.id
-                                                    )
-                                                "
-                                                >Delete</DangerButton
+                                              @click="deletePermission()">
+                                                Delete
+                                            </DangerButton
                                             >
                                             <SecondaryButton @click="closeModal"
                                                 >Cancel</SecondaryButton
