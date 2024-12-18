@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import { usePermission } from "@/composables/permissions";
 import Table from "@/Components/Table.vue";
 import TableRow from "@/Components/TableRow.vue";
 import TableHeaderCell from "@/Components/TableHeaderCell.vue";
@@ -10,85 +11,86 @@ import Modal from "@/Components/Modal.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 
-defineProps(["roles"]);
+defineProps(["posts"]);
 const form = useForm({});
 
-const showConfirmDeleteRoleModal = ref(false);
-const currentDeleteRoleId = ref(0);
+const showConfirmDeletePostModal = ref(false);
+const currentDeleteId = ref(0);
 
-const confirmDeleteRole = (id) => {
-    showConfirmDeleteRoleModal.value = true;
-    currentDeleteRoleId.value = id;
+const { hasPermission } = usePermission();
+
+const confirmDeletePost = (id) => {
+    showConfirmDeletePostModal.value = true;
+    currentDeleteId.value = id;
 };
 
 const closeModal = () => {
-    showConfirmDeleteRoleModal.value = false;
+    showConfirmDeletePostModal.value = false;
 };
 
-const deleteRole = () => {
-    form.delete(route("roles.destroy", currentDeleteRoleId.value), {
+const deletePost = () => {
+    form.delete(route("posts.destroy", currentDeleteId.value), {
         onSuccess: () => closeModal(),
     });
 };
 </script>
 
 <template>
-    <Head title="Roles" />
+    <Head title="Posts Index" />
 
     <AdminLayout>
         <div class="py-4 mx-auto max-w-7xl">
             <div class="flex justify-between">
-                <h1>Roles Index Page</h1>
-                <Link
-                    :href="route('roles.create')"
-                    class="px-3 py-2 font-semibold text-white bg-indigo-500 rounded hover:bg-indigo-700"
-                >
-                    New Role
-                </Link>
+                <h1>Posts Index Page</h1>
+                    <Link
+                        :href="route('posts.create')"
+                        class="px-3 py-2 font-semibold text-white bg-indigo-500 rounded hover:bg-indigo-700"
+                        >New Post</Link
+                    >
             </div>
             <div class="mt-6">
                 <Table>
                     <template #header>
                         <TableRow>
                             <TableHeaderCell>ID</TableHeaderCell>
-                            <TableHeaderCell>Name</TableHeaderCell>
+                            <TableHeaderCell>Title</TableHeaderCell>
                             <TableHeaderCell>Action</TableHeaderCell>
                         </TableRow>
                     </template>
                     <template #default>
                         <TableRow
-                            v-for="role in roles"
-                            :key="role.id"
+                            v-for="post in posts"
+                            :key="post.id"
                             class="border-b"
                         >
-                            <TableDataCell>{{ role.id }}</TableDataCell>
-                            <TableDataCell>{{ role.name }}</TableDataCell>
+                            <TableDataCell>{{ post.id }}</TableDataCell>
+                            <TableDataCell>{{ post.title }}</TableDataCell>
                             <TableDataCell class="space-x-4">
                                 <Link
-                                    :href="route('roles.edit', role.id)"
+                                    :href="route('posts.edit', post.id)"
                                     class="text-green-400 hover:text-green-600"
+                                    >Edit</Link
                                 >
-                                    Edit
-                                </Link>
                                 <button
-                                    @click="confirmDeleteRole(role.id)"
+                                    @click="confirmDeletePost(post.id)"
                                     class="text-red-400 hover:text-red-600"
                                 >
                                     Delete
                                 </button>
+
                                 <Modal
-                                    :show="showConfirmDeleteRoleModal"
+                                    :show="showConfirmDeletePostModal"
                                     @close="closeModal"
                                 >
                                     <div class="p-6">
                                         <h2
                                             class="text-lg font-semibold text-slate-800"
                                         >
-                                            Are you sure to delete this Role?
+                                            Are you sure to delete this Post?
                                         </h2>
                                         <div class="flex mt-6 space-x-4">
                                             <DangerButton
-                                                @click="deleteRole()"
+                                                @click="deletePost()"
                                                 >Delete</DangerButton
                                             >
                                             <SecondaryButton @click="closeModal"

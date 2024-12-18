@@ -114,7 +114,7 @@ const showingNavigationDropdown = ref(false);
                             <span class="-mr-1 font-medium">Permissions</span>
                         </SidebarLink>
                     </li>
-                    <!-- <li>
+                    <li>
                         <SidebarLink
                             :href="route('posts.index')"
                             :active="route().current('posts.index')"
@@ -136,7 +136,7 @@ const showingNavigationDropdown = ref(false);
 
                             <span class="-mr-1 font-medium">Posts</span>
                         </SidebarLink>
-                    </li> -->
+                    </li>
                 </ul>
             </div>
 
