@@ -42,11 +42,13 @@ const deletePost = () => {
         <div class="py-4 mx-auto max-w-7xl">
             <div class="flex justify-between">
                 <h1>Posts Index Page</h1>
+                  <template v-if="hasPermission('Create Post')">
                     <Link
                         :href="route('posts.create')"
                         class="px-3 py-2 font-semibold text-white bg-indigo-500 rounded hover:bg-indigo-700"
                         >New Post</Link
                     >
+                  </template>
             </div>
             <div class="mt-6">
                 <Table>
@@ -66,18 +68,21 @@ const deletePost = () => {
                             <TableDataCell>{{ post.id }}</TableDataCell>
                             <TableDataCell>{{ post.title }}</TableDataCell>
                             <TableDataCell class="space-x-4">
+                              <template v-if="hasPermission('Update Post')">
                                 <Link
                                     :href="route('posts.edit', post.id)"
                                     class="text-green-400 hover:text-green-600"
                                     >Edit</Link
                                 >
+                              </template>
+                              <template v-if="hasPermission('Delete Post')">
                                 <button
                                     @click="confirmDeletePost(post.id)"
                                     class="text-red-400 hover:text-red-600"
                                 >
                                     Delete
                                 </button>
-
+                              </template>
                                 <Modal
                                     :show="showConfirmDeletePostModal"
                                     @close="closeModal"
